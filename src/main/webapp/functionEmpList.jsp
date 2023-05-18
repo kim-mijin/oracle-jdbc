@@ -50,30 +50,6 @@
 	System.out.println(beginRow + " <--functionEmpList beginRow");
 	System.out.println(endRow + " <--functionEmpList endRow");
 	
-	// 단일값 함수를 이용한 쿼리 출력
-	String sql = "select 번호, 이름, 이름첫글자, 연봉, 급여, 입사날짜, 입사년도 from "
-				+ "(select rownum 번호, last_name 이름, substr(last_name, 1, 1) 이름첫글자, salary 연봉, round(salary/12, 2) 급여, "
-				+ "hire_date 입사날짜, extract(year from hire_date) 입사년도 from employees) "
-				+ "where 번호 between ? and ?";
-	PreparedStatement stmt = conn.prepareStatement(sql);
-	stmt.setInt(1, beginRow);
-	stmt.setInt(2, endRow);
-	ResultSet rs = stmt.executeQuery();
-	
-	ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-	while(rs.next()){
-		HashMap<String, Object> m = new HashMap<String, Object>();
-		m.put("번호", rs.getInt("번호"));
-		m.put("이름", rs.getString("이름"));
-		m.put("이름첫글자", rs.getString("이름첫글자"));
-		m.put("연봉", rs.getInt("연봉"));
-		m.put("급여", rs.getDouble("급여"));
-		m.put("입사날짜", rs.getString("입사날짜"));
-		m.put("입사년도", rs.getInt("입사년도"));
-		list.add(m);
-	}
-	System.out.println(list.size() + " <--functionEmpList list.size()");
-	
 	// 페이지 네비게이션 -> 10대, 20대..를 구하는 패턴과 동일
 	int pagePerPage = 10;
 	/*
@@ -100,6 +76,30 @@
 	System.out.println(lastPage + " <--functionEmpList lastPage");
 	System.out.println(minPage + " <--functionEmpList minPage");
 	System.out.println(maxPage + " <--functionEmpList maxPage");
+	
+	// 단일값 함수를 이용한 쿼리 출력
+	String sql = "select 번호, 이름, 이름첫글자, 연봉, 급여, 입사날짜, 입사년도 from "
+				+ "(select rownum 번호, last_name 이름, substr(last_name, 1, 1) 이름첫글자, salary 연봉, round(salary/12, 2) 급여, "
+				+ "hire_date 입사날짜, extract(year from hire_date) 입사년도 from employees) "
+				+ "where 번호 between ? and ?";
+	PreparedStatement stmt = conn.prepareStatement(sql);
+	stmt.setInt(1, beginRow);
+	stmt.setInt(2, endRow);
+	ResultSet rs = stmt.executeQuery();
+	
+	ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+	while(rs.next()){
+		HashMap<String, Object> m = new HashMap<String, Object>();
+		m.put("번호", rs.getInt("번호"));
+		m.put("이름", rs.getString("이름"));
+		m.put("이름첫글자", rs.getString("이름첫글자"));
+		m.put("연봉", rs.getInt("연봉"));
+		m.put("급여", rs.getDouble("급여"));
+		m.put("입사날짜", rs.getString("입사날짜"));
+		m.put("입사년도", rs.getInt("입사년도"));
+		list.add(m);
+	}
+	System.out.println(list.size() + " <--functionEmpList list.size()");
 	
 	
 %>
